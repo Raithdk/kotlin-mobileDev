@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstkotlinapp.data.Movie
 import com.example.myfirstkotlinapp.data.MovieDatabase
+import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
 
         // TODO get movies from actual database instead of return
+
         var movieList : ArrayList<Movie> = populateDatabase()
 
         //  ####  Recycleview ####
@@ -39,7 +41,9 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, DetailActivity::class.java).apply {
 
                 }
-                intent.putExtra("title", "message2")
+                intent.putExtra("title", movieList[position].movieName)
+                intent.putExtra("description", movieList[position].description)
+                intent.putExtra("posterId", movieList[position].moviePicId)
                 startActivity(intent)
             }
         })
@@ -58,18 +62,19 @@ class MainActivity : AppCompatActivity() {
         movieList.add(movie3)
         movieList.add(movie4)
 
-        db = MovieDatabase.getAppDatabase(this)!!
+        thread {
+            db = MovieDatabase.getAppDatabase(this)!!
 
-        //Populates database if empty
-        if(db.movieDao().getAll().isEmpty()){
-            Log.i("DatabaseTest", "Ran Database Population")
+            //Populates database if empty
+            if (db.movieDao().getAll().isEmpty()) {
+                Log.i("DatabaseTest", "Ran Database Population")
 
-            db.movieDao().insert(movie1)
-            db.movieDao().insert(movie2)
-            db.movieDao().insert(movie3)
-            db.movieDao().insert(movie4)
+                db.movieDao().insert(movie1)
+                db.movieDao().insert(movie2)
+                db.movieDao().insert(movie3)
+                db.movieDao().insert(movie4)
+            }
         }
-
         return movieList
     }
 }

@@ -5,24 +5,23 @@ import androidx.room.Database
 import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
 
-@Database(entities = arrayOf(Movie::class), version = 1,)
+@Database(entities = arrayOf(Movie::class), version = 1)
 abstract class MovieDatabase : RoomDatabase() {
-    abstract fun movieDao() : MovieDao
+    abstract fun movieDao(): MovieDao
 
-    companion object{
-        private var INSTANCE : MovieDatabase? = null
-        // TODO MAIN THREAD QUERIE REMOVE
+    companion object {
+        private var INSTANCE: MovieDatabase? = null
 
-        fun getAppDatabase(context: Context) : MovieDatabase? {
+        fun getAppDatabase(context: Context): MovieDatabase? {
 
-                    if( INSTANCE == null){
-                            INSTANCE = databaseBuilder(
-                                context.applicationContext,
-                                MovieDatabase::class.java,
-                                "MovieDatabase"
-                            ).allowMainThreadQueries().build()
-                    }
-                    return INSTANCE
+            if (INSTANCE == null) {
+                INSTANCE = databaseBuilder(
+                    context.applicationContext,
+                    MovieDatabase::class.java,
+                    "MovieDatabase"
+                ).build()
+            }
+            return INSTANCE
         }
     }
 }

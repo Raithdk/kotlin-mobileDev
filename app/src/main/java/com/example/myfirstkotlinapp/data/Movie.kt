@@ -10,5 +10,4 @@ data class Movie(
     @ColumnInfo(name = "name") val movieName : String,
     @ColumnInfo(name = "imageurl") val moviePicId: Int,
     @ColumnInfo(name = "description") val description : String,
-
 );
