@@ -1,7 +1,6 @@
 package com.example.myfirstkotlinapp
 
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstkotlinapp.data.Movie
+
 
 class MovieAdapter(private val dataSet: ArrayList<Movie>) :
     RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
@@ -53,3 +53,5 @@ class MovieAdapter(private val dataSet: ArrayList<Movie>) :
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 }
+
+

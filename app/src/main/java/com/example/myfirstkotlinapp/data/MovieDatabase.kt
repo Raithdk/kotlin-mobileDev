@@ -1,7 +1,6 @@
 package com.example.myfirstkotlinapp.data
 
 import android.content.Context
-import kotlinx.coroutines.*
 import androidx.room.Database
 import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
@@ -24,8 +23,6 @@ abstract class MovieDatabase : RoomDatabase() {
                             ).allowMainThreadQueries().build()
                     }
                     return INSTANCE
-
-
         }
     }
 }

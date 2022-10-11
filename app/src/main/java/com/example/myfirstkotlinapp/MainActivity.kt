@@ -3,24 +3,21 @@ package com.example.myfirstkotlinapp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstkotlinapp.data.Movie
 import com.example.myfirstkotlinapp.data.MovieDatabase
-import kotlinx.coroutines.runBlocking
 
 
-class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
+class MainActivity : AppCompatActivity() {
     lateinit var db : MovieDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         // TODO get movies from actual database instead of return
         var movieList : ArrayList<Movie> = populateDatabase()
@@ -72,10 +69,8 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
             db.movieDao().insert(movie3)
             db.movieDao().insert(movie4)
         }
+
         return movieList
     }
-
-    override fun recyclerViewListClicked(v: View, position: Int) {
-        TODO("Not yet implemented")
-    }
 }
+
