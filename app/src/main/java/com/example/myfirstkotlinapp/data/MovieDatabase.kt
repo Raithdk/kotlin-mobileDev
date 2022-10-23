@@ -13,7 +13,6 @@ abstract class MovieDatabase : RoomDatabase() {
         private var INSTANCE: MovieDatabase? = null
 
         fun getAppDatabase(context: Context): MovieDatabase? {
-
             if (INSTANCE == null) {
                 INSTANCE = databaseBuilder(
                     context.applicationContext,

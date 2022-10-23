@@ -11,15 +11,15 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
 
         val title = intent.getStringExtra("title")
-        val description = intent.getStringExtra("description")
+        val cast = intent.getStringExtra("cast")
         val posterId = intent.getIntExtra("posterId",-1)
 
         val titleView = findViewById<TextView>(R.id.movieTitle)
-        val descriptionView = findViewById<TextView>(R.id.movieDescription)
         val posterView = findViewById<ImageView>(R.id.moviePosterDetail)
+        val castView = findViewById<TextView>(R.id.castView)
 
         titleView.text = title
-        descriptionView.text = description
+        castView.text = cast
         if (posterId != -1) {
             posterView.setImageResource(posterId)
         }

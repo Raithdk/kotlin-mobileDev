@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         // TODO get movies from actual database instead of return
 
-        var movieList : ArrayList<Movie> = populateDatabase()
+        var movieList: ArrayList<Movie> = populateDatabase()
 
         //  ####  Recycleview ####
         var recyclerView: RecyclerView = findViewById(R.id.movieRecView)
@@ -42,8 +42,10 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 intent.putExtra("title", movieList[position].movieName)
-                intent.putExtra("description", movieList[position].description)
+                intent.putExtra("director", movieList[position].director)
+                intent.putExtra("year", movieList[position].yr)
                 intent.putExtra("posterId", movieList[position].moviePicId)
+                intent.putExtra("cast", movieList[position].cast)
                 startActivity(intent)
             }
         })
@@ -51,16 +53,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun populateDatabase() : ArrayList<Movie>{
-        var movie1 = Movie(0, "Get Out", R.drawable.getout, "Movie about getting out")
-        var movie2 = Movie(0, "Django Unchained", R.drawable.djangounchained, "Django is not chained")
-        var movie3 = Movie(0, "Gladiator", R.drawable.gladiator, "Gladiator in a gladiator battle")
-        var movie4 = Movie(0, "Pulpfiction", R.drawable.pulpfiction, "Juice with no pulp is fiction")
+        var movie1 = Movie(0, "Get Out", R.drawable.getout, "Jordan Peele", 2017, "Daniel Kaluuya, Allison Williams, LaKeith Stanfield")
+        var movie2 = Movie(0, "Django Unchained", R.drawable.djangounchained, "Quentin Tarantino", 2012, "Jamie Foxx, Leonardo DiCaprio, Christoph Waltz")
+        var movie3 = Movie(0, "Gladiator", R.drawable.gladiator, "Ridley Scott", 2000, "Russel Crowe, Joaquin Phoenix, Connie Nielsen")
+        var movie4 = Movie(0, "Pulpfiction", R.drawable.pulpfiction, "Quentin Tarantino", 1994, "Uma Thurman, Samuel L. Jackson, John Travolta")
+        var movie5 = Movie(0,"Shrek", R.drawable.shrek, "Andrew Adamson", 2001, "Mike Myers, Eddie Murhpy, Cameron Diaz")
+        var movie6 = Movie(0,"Saving Private Ryan", R.drawable.ryan, "Steven Spielberg", 1998, "Tom Hanks, Matt Damon, Vin Diesel")
+
 
         var movieList : ArrayList<Movie> = arrayListOf()
         movieList.add(movie1)
         movieList.add(movie2)
         movieList.add(movie3)
         movieList.add(movie4)
+        movieList.add(movie5)
+        movieList.add(movie6)
 
         thread {
             db = MovieDatabase.getAppDatabase(this)!!
@@ -68,12 +75,11 @@ class MainActivity : AppCompatActivity() {
             //Populates database if empty
             if (db.movieDao().getAll().isEmpty()) {
                 Log.i("DatabaseTest", "Ran Database Population")
-
-                db.movieDao().insert(movie1)
-                db.movieDao().insert(movie2)
-                db.movieDao().insert(movie3)
-                db.movieDao().insert(movie4)
+                movieList.forEach {
+                    db.movieDao().insert(it)
+                }
             }
+            print(db.movieDao().getByName("shrek"))
         }
         return movieList
     }

@@ -18,23 +18,23 @@
 
     <ImageView
         android:id="@+id/moviePosterDetail"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="256dp"
+        android:layout_height="384dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/movieDescription"
+        android:id="@+id/castView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="DescriptionView"
+        android:text="CastView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
