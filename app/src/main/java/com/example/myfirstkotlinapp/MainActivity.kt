@@ -2,44 +2,45 @@ package com.example.myfirstkotlinapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myfirstkotlinapp.data.Movie
-import com.example.myfirstkotlinapp.data.MovieDatabase
-import kotlin.concurrent.thread
+import com.example.myfirstkotlinapp.data.*
+import kotlinx.coroutines.flow.Flow
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var db : MovieDatabase
 
+    private val movieViewModel: MovieViewModel by viewModels {
+        MovieViewModelFactory((application as MovieApplication).repository)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
         // TODO get movies from actual database instead of return
-
-        var movieList: ArrayList<Movie> = populateDatabase()
+        var movieList: Flow<List<Movie>> = movieViewModel.allMovies
 
         //  ####  Recycleview ####
         var recyclerView: RecyclerView = findViewById(R.id.movieRecView)
+        var adapter = MovieAdapter()
+
+        recyclerView.adapter = adapter
         // The layout manager
+
         var recLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val dividerItemDecoration = DividerItemDecoration(recyclerView.context, recLayoutManager.getOrientation())
-        recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.layoutManager = recLayoutManager
 
-        var adapter = MovieAdapter(movieList)
-        recyclerView.adapter = adapter
+        val dividerItemDecoration = DividerItemDecoration(recyclerView.context, recLayoutManager.getOrientation())
+        recyclerView.addItemDecoration(dividerItemDecoration)
 
         adapter.setOnClickListener(object : MovieAdapter.onRecClickListener{
             override fun recyclerViewListClicked(position: Int) {
-
                 val intent = Intent(this@MainActivity, DetailActivity::class.java).apply {
-
                 }
                 intent.putExtra("title", movieList[position].movieName)
                 intent.putExtra("director", movieList[position].director)
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+
 
     }
 
@@ -69,18 +71,6 @@ class MainActivity : AppCompatActivity() {
         movieList.add(movie5)
         movieList.add(movie6)
 
-        thread {
-            db = MovieDatabase.getAppDatabase(this)!!
-
-            //Populates database if empty
-            if (db.movieDao().getAll().isEmpty()) {
-                Log.i("DatabaseTest", "Ran Database Population")
-                movieList.forEach {
-                    db.movieDao().insert(it)
-                }
-            }
-            print(db.movieDao().getByName("shrek"))
-        }
         return movieList
     }
 }

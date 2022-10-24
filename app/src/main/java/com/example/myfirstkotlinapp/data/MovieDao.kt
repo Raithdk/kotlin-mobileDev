@@ -4,15 +4,17 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
+
 
 @Dao
 interface MovieDao {
 
     @Query("SELECT * FROM Movie")
-    fun getAll(): List<Movie>
+    fun getAll() : Flow<List<Movie>>
 
     @Query("SELECT * FROM Movie WHERE :movieID = uid")
-    fun getById(movieID : Int): Movie
+    suspend fun getById(movieID : Int): Movie
 
     @Query("SELECT * FROM Movie WHERE name LIKE '%'||:movieName||'%'")
     fun getByName(movieName : String?) : Movie

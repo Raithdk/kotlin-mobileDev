@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstkotlinapp.data.Movie
 
 
-class MovieAdapter(private val dataSet: ArrayList<Movie>) :
-    RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+class MovieAdapter(private val dataSet: ArrayList<Movie>) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
     private lateinit var myListener: onRecClickListener
+
 
     interface onRecClickListener {
         fun recyclerViewListClicked(position: Int)
