@@ -14,24 +14,25 @@ import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     lateinit var db : MovieDatabase
+    lateinit var recyclerView : RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        // TODO get movies from actual database instead of return
-
-        var movieList: ArrayList<Movie> = populateDatabase()
-
         //  ####  Recycleview ####
-        var recyclerView: RecyclerView = findViewById(R.id.movieRecView)
+        recyclerView = findViewById(R.id.movieRecView)
         // The layout manager
         var recLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val dividerItemDecoration = DividerItemDecoration(recyclerView.context, recLayoutManager.getOrientation())
         recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.layoutManager = recLayoutManager
+        populateDatabase()
+    }
 
+    private fun initRecycleview() {
+
+        var movieList: ArrayList<Movie> = ArrayList(db.movieDao().getAll())
         var adapter = MovieAdapter(movieList)
         recyclerView.adapter = adapter
 
@@ -49,10 +50,9 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
-
     }
 
-    private fun populateDatabase() : ArrayList<Movie>{
+    private fun populateDatabase() : Boolean{
         var movie1 = Movie(0, "Get Out", R.drawable.getout, "Jordan Peele", 2017, "Daniel Kaluuya, Allison Williams, LaKeith Stanfield")
         var movie2 = Movie(0, "Django Unchained", R.drawable.djangounchained, "Quentin Tarantino", 2012, "Jamie Foxx, Leonardo DiCaprio, Christoph Waltz")
         var movie3 = Movie(0, "Gladiator", R.drawable.gladiator, "Ridley Scott", 2000, "Russel Crowe, Joaquin Phoenix, Connie Nielsen")
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         movieList.add(movie5)
         movieList.add(movie6)
 
-        thread {
+        Thread {
             db = MovieDatabase.getAppDatabase(this)!!
 
             //Populates database if empty
@@ -79,9 +79,14 @@ class MainActivity : AppCompatActivity() {
                     db.movieDao().insert(it)
                 }
             }
-            print(db.movieDao().getByName("shrek"))
-        }
-        return movieList
+            // Populates Recycleview
+            initRecycleview();
+        }.start()
+
+
+
+        return true
+
     }
 }
 
